@@ -99,8 +99,8 @@ jobs:
             -p 8081:80 \
             -e SQL_USERNAME=${{ secrets.SQL_USERNAME }} \
             -e SQL_PASSWORD=${{ secrets.SQL_PASSWORD }} \
-            --name php-app \
-            php-demo
+            --name phpappteste \
+            php-demo2
 
   test:
     runs-on: self-hosted
