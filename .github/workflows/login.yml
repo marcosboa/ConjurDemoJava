@@ -56,7 +56,7 @@ jobs:
         run: docker run -d -p 8081:80 php-demo
  
   test:
-    runs-on: self-hosted
+    runs-on: self-hosted #Ambiente Linux
     permissions:
       id-token: 'write'
       contents: 'read'
