@@ -50,10 +50,10 @@ jobs:
           EOL
  
       - name: Construir imagem Docker
-        run: docker build -t php-demo .
+        run: docker build -t php-demo2 .
  
       - name: Executar container Docker
-        run: docker run -d -p 8081:80 php-demo
+        run: docker run -d -p 8081:80 php-demo2
  
   test:
     runs-on: self-hosted #Ambiente Linux
