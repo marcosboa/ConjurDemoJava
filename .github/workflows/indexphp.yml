@@ -41,7 +41,7 @@ jobs:
               $valid_pass = "secret"; // Será substituído pelo Conjur
               
               if ($username === $valid_user && $password === $valid_pass) {
-                  echo "<p style='color:green'>Seja Bem Vindo, Login bem-sucedido!</p>";
+                  echo "<p style='color:green'>Seja Bem Vindo, Belxiorrr Guardian!</p>";
               } else {
                   echo "<p style='color:red'>Credenciais inválidas.</p>";
               }
