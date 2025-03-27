@@ -91,7 +91,7 @@ jobs:
           echo '<?php session_start(); session_destroy(); header("Location: login.php"); ?>' > logout.php
 
       - name: Construir imagem Docker
-        run: docker build -t php-demo .
+        run: docker build -t phptest .
 
       - name: Executar container Docker com variáveis de ambiente
         run: |
