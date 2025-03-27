@@ -11,3 +11,4 @@ jobs:
           echo "Runner funcionando!"
           echo "Sistema: $(uname -a)"
           echo "Diretório: $(pwd)"
+          echo "Diretório: $(ls -la)"
