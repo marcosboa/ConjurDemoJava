@@ -1,0 +1,40 @@
+on: [push]
+
+name: Docker PHP Demo
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Configurar Docker
+        run: |
+          echo "Criando Dockerfile..."
+          echo "FROM php:apache" > Dockerfile
+          echo "COPY index.php /var/www/html/" >> Dockerfile
+
+      - name: Criar arquivo index.php
+        run: |
+          echo "<?php echo 'Hello, World from PHP!'; ?>" > index.php
+
+      - name: Construir imagem Docker
+        run: docker build -t php-demo .
+
+      - name: Executar container Docker
+        run: docker run -d -p 8080:80 php-demo
+
+  test:
+    runs-on: self-hosted  # Alterado para Linux
+    permissions:
+      id-token: 'write'
+      contents: 'read'
+    steps:
+      - name: Import Secrets using CyberArk Conjur Secret Fetcher Action
+        uses: cyberark/conjur-action@v2.0.5
+        with:
+          url: ${{ secrets.CONJUR_URL }}
+          account: cyberarkdemo
+          authn_id: ${{ secrets.CONJUR_AUTHN_ID }}
+          secrets: db/sqlusername|sql_username;db/sql_password
