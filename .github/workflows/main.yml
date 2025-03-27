@@ -1,0 +1,13 @@
+name: Testar Runner Self-Hosted
+on: 
+  workflow_dispatch:  # Permite acionar manualmente
+
+jobs:
+  test-runner:
+    runs-on: [self-hosted]  # Usa seu runner
+    steps:
+      - name: Verificar conexão
+        run: |
+          echo "Runner funcionando!"
+          echo "Sistema: $(uname -a)"
+          echo "Diretório: $(pwd)"
