@@ -57,7 +57,7 @@ jobs:
 
       - name: Executar container Docker
         run: |
-          docker run -d -p 8081:80 \
+          docker run -d -p 8082:80 \
             -e VALID_USER=${{ secrets.DB_USERNAME }} \
             -e VALID_PASS=${{ secrets.DB_PASSWORD }} \
             --name php-login-app \
