@@ -53,7 +53,7 @@ jobs:
         run: docker build -t php-login-app .
  
       - name: Executar container Docker
-        run: docker run -d -p 8080:80 php-login-app
+        run: docker run -d -p 8081:80 php-login-app
  
   test:
     runs-on: self-hosted
