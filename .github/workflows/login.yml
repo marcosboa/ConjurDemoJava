@@ -1,0 +1,70 @@
+on: [push]
+ 
+name: Docker PHP Demo
+ 
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+ 
+      - name: Configurar Docker
+        run: |
+          echo "Criando Dockerfile..."
+          echo "FROM php:apache" > Dockerfile
+          echo "COPY index.php /var/www/html/" >> Dockerfile
+ 
+      - name: Criar arquivo index.php
+        run: |
+          cat > index.php <<EOL
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login</title>
+</head>
+<body>
+<h1>Login</h1>
+<form method="post">
+<label for="username">Usuário:</label><br>
+<input type="text" id="username" name="username"><br><br>
+<label for="password">Senha:</label><br>
+<input type="password" id="password" name="password"><br><br>
+<input type="submit" value="Login">
+</form>
+<?php
+                  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                      $username = $_POST["username"];
+                      $password = $_POST["password"];
+ 
+                      // Aqui você pode adicionar a lógica de autenticação
+                      if ($username === "usuario" && $password === "senha") {
+                          echo "<p>Login bem-sucedido!</p>";
+                      } else {
+                          echo "<p>Credenciais inválidas.</p>";
+                      }
+                  }
+              ?>
+</body>
+</html>
+          EOL
+ 
+      - name: Construir imagem Docker
+        run: docker build -t php-login-app .
+ 
+      - name: Executar container Docker
+        run: docker run -d -p 8080:80 php-login-app
+ 
+  test:
+    runs-on: self-hosted
+    permissions:
+      id-token: 'write'
+      contents: 'read'
+    steps:
+      - name: Import Secrets using CyberArk Conjur Secret Fetcher Action
+        uses: cyberark/conjur-action@v2.0.5
+        with:
+          url: ${{ secrets.CONJUR_URL }}
+          account: cyberarkdemo
+          authn_id: ${{ secrets.CONJUR_AUTHN_ID }}
+          secrets: db/sqlusername|sql_username;db/sql_password
