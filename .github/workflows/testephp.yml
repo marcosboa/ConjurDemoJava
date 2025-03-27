@@ -23,7 +23,7 @@ jobs:
         run: docker build -t php-demo .
 
       - name: Executar container Docker
-        run: docker run -d -p 8080:80 php-demo
+        run: docker run -d -p 8081:80 php-demo
 
   test:
     runs-on: self-hosted  # Alterado para Linux
