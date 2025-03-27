@@ -100,7 +100,7 @@ jobs:
             -e SQL_USERNAME=${{ secrets.SQL_USERNAME }} \
             -e SQL_PASSWORD=${{ secrets.SQL_PASSWORD }} \
             --name php-appteste \
-            php-demoteste
+            php-demo .
 
   test:
     runs-on: self-hosted
