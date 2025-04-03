@@ -1,0 +1,39 @@
+name: Conjur Integration with OIDC
+on: [push]
+
+permissions:
+  id-token: write  # Permissão crítica para gerar JWT
+  contents: read   # Permissão para checkout do código
+
+jobs:
+  conjur-auth:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Generate JWT Token
+        id: jwt
+        run: |
+          echo "OIDC_TOKEN=$(curl -sLS \
+            -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            -H "Accept: application/json; api-version=2.0" \
+            "$ACTIONS_ID_TOKEN_REQUEST_URL" \
+            | jq -r '.value')" >> $GITHUB_OUTPUT
+          echo "Token JWT gerado e armazenado em steps.jwt.outputs.OIDC_TOKEN"
+
+      - name: Print Token (DEBUG - opcional)
+        run: |
+          echo "${{ steps.jwt.outputs.OIDC_TOKEN }}" | cut -d '.' -f 2 | base64 -d | jq
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Authenticate with Conjur
+        uses: cyberark/conjur-action@v1
+        with:
+          conjur-url: ${{ secrets.CONJUR_AUTHN_URL }}
+          conjur-account: ${{ secrets.CONJUR_ACCOUNT }}
+          conjur-host-id: ${{ secrets.CONJUR_HOST_ID }}
+          jwt-token: ${{ steps.jwt.outputs.OIDC_TOKEN }}  # Token JWT usado para auth
+          secret-names: |
+            ci-secrets/db-password
