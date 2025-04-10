@@ -12,7 +12,7 @@ jobs:
       - name: Import Secrets using CyberArk Conjur Secret Fetcher Action
         uses: cyberark/conjur-action@v2.0.5
         with:
-          url: ${{ secrets.CONJUR_URL }}
+          url: ${{ https://conjurleader.at9sec.corp }}
           account: at9sec
           authn_id: ${{ secrets.CONJUR_AUTHN_ID }}
           secrets: db/sqlusername|sql_username;db/sql_password
